@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  web:
+    image: blognificent:2.0
+    container_name: blognificent
+
+    # Build context and Dockerfile path
+    build:
+      context: .
+      dockerfile: Dockerfile
+      labels:
+        maintainer: "Senzo Maseko <senzo.e.maseko@gmail.com>"
+        org.opencontainers.image.title: "Blognificent"
+        org.opencontainers.image.version: "2.0"
+        org.opencontainers.image.description: "Django-based blog app container"
+        org.opencontainers.image.source: "https://github.com/SenzoEarl/blognificent"
+        org.opencontainers.image.licenses: "MIT"
+
+
+    command: gunicorn blognificent.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+

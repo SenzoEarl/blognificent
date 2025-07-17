@@ -1,0 +1,145 @@
+{% extends 'assets/base.html' %}
+{% load blog_tags %}
+
+{% block content %}
+
+    <div class="card lg:card-side bg-base-100 shadow-lg mb-2">
+        <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
+            <h3 class="card-title">
+                <small>
+                    <i class="ai-calendar"></i> {{ post.publish|date }}<br>
+                    <i class="ai-person"></i> {{ post.author }}<br>
+
+                    <span>
+                        <i class="ai-tag"></i>
+                        {{ post.tags.all|join:", " }}<br>
+                    </span>
+                </small>
+            </h3>
+
+            <a href="{% url 'blog:share_post' post.id %}">
+                <i class="fa-regular fa-envelope fa-lg"></i> Email
+            </a>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const currentUrl = encodeURIComponent(window.location.href);
+                    const shareText = encodeURIComponent("Check this out on Blognificent: ");
+                    const whatsappLink = `https://wa.me/?text=${shareText}${currentUrl}`;
+                    document.getElementById("whatsapp-share").setAttribute("href", whatsappLink);
+                });
+            </script>
+
+            <!-- WhatsApp Share Button -->
+
+            <a id="whatsapp-share text-xl" target="_blank">
+                <i class="ai-whatsapp-fill"></i> Share on WhatsApp
+            </a>
+
+
+            <p>{{ post.body|markdown }}</p>
+        </div>
+    </div>
+
+    <div class="card lg:card-side bg-base-100 shadow-lg mt-2">
+        <div class="card-body">
+            <h2 class="card-title">Post Comment</h2>
+            <p>
+                {% include 'blog/post/comment form.html' %}
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block left %}
+
+    <ul class="list bg-base-100 rounded-box shadow-md">
+        {% with comments.count as total_comments %}
+            <li class="p-4 pb-1 text-xs opacity-60 tracking-wide">
+                {{ total_comments }}
+                comment{{ total_comments|pluralize }}
+            </li>
+        {% endwith %}
+
+        {% for comment in comments %}
+            <li class="list-row -mt-3">
+                <div><img class="size-10 rounded-box" src="https://testingbot.com/free-online-tools/random-avatar/30"/>
+                </div>
+                <div>
+                    <div>{{ comment.name }}</div>
+                    <div class="text-xs uppercase font-semibold opacity-60">{{ comment.created|date }}</div>
+                </div>
+                <p class="list-col-wrap text-xs -mt-4 italic">{{ comment.body }}</p>
+            </li>
+        {% empty %}
+            <li class="list-row -mt-3">
+                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/>
+                </div>
+                <div>
+                    <div>System Admin</div>
+                    <div class="text-xs uppercase font-semibold opacity-60">{% current_date %}</div>
+                </div>
+                <p class="list-col-wrap text-xs -mt-4 italic text-rose-400">
+                    No comments made so far
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+
+    <!---Similar Posts -->
+    <div class="card lg:card-side bg-base-100 shadow-lg mt-2">
+        <div class="card-body">
+            <h2 class="card-title">Similar Posts</h2>
+            <p class="-mt-2">
+            <ul class="list-none">
+                {% for post in similar_posts %}
+                    <li>
+                        <a class="font-bold"
+                           href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </li>
+                {% empty %}
+                    <li class="font-bold">There are no similar
+                        posts
+                    </li>
+                {% endfor %}
+            </ul>
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Latest Posts -->
+    <div class="card lg:card-side bg-base-100 shadow-lg mt-2">
+        <div class="card-body">
+            <h2 class="card-title">Latest Posts</h2>
+            <p class="-mt-2">
+                {% show_latest_posts %}
+            </p>
+        </div>
+    </div>
+
+    <!--Most Commented Posts -->
+    <div class="card lg:card-side bg-base-100 shadow-lg mt-2">
+        <div class="card-body">
+            <h2 class="card-title">Most Commented Posts</h2>
+            <p class="-mt-2">
+                {% get_most_commented_posts as most_commented_posts %}
+            <ul class="list-none">
+                {% for post in most_commented_posts %}
+                    <li class="underline visited:line-through font-bold">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </li>
+                {% empty %}
+                    <li class="underline visited:line-through font-bold">all posts are looking equally commented</li>
+                {% endfor %}
+
+            </ul>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

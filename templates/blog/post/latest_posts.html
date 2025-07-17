@@ -1,0 +1,9 @@
+<ul class="list-none md:list-none">
+    {% for post in latest_posts %}
+        <li class="underline font-bold">
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </li>
+    {% empty %}
+        <li class="underline font-bold">No latest posts</li>
+    {% endfor %}
+</ul>

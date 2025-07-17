@@ -1,0 +1,10 @@
+{% extends 'assets/base.html' %}
+
+{% block content %}
+    {% if comment %}
+    	<h3>Your comment has been added</h3>
+        <a href="{{ post.get_absolute_url }}">Back to post</a>
+    {% else %}
+    	{% include 'blog/post/comment form.html' %}
+    {% endif %}
+{% endblock %}

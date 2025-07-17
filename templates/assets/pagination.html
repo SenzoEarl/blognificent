@@ -1,0 +1,20 @@
+<div class="join mt-2 justify-center sticky top-0">
+
+    {% if page.has_previous %}
+        <button class="join-item bg-blue-200 text-white px-4 py-2 rounded hover:bg-blue-600"
+                href="?page={{ page.previous_page_number }}">
+            Previous
+        </button>
+    {% endif %}
+
+    <button class="join-item bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Page {{ page.number }} of {{ page.paginator.num_pages }}
+    </button>
+
+    {% if page.has_next %}
+        <button class="join-item bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-600"
+                href="?page={{ page.next_page_number }}">Next
+        </button>
+    {% endif %}
+
+</div>

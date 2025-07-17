@@ -1,0 +1,116 @@
+{% load blog_tags %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blognificent</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/86dd53c953.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/akar-icons-fonts"></script>
+
+    <link rel="icon" type="image/svg+xml"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%237d6ee7%22></rect><text x=%2250%%22 y=%2250%%22 dominant-baseline=%22central%22 text-anchor=%22middle%22 font-size=%2290%22>🚀</text></svg>"/>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<!-- Main navigation container -->
+
+<header class="bg-blue-100">
+    <div class="navbar bg-blue-100">
+        <div class="flex-1">
+            <a href="{% url 'blog:index' %}" class="btn btn-ghost text-xl">Blognificent</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{% url 'blog:post_feed' %}" class="link">RSS</a></li>
+                <li><a href="{% url 'blog:api_post_list' %}" class="link">API</a></li>
+                <li><a href="{% url 'admin:index' %}" class="link">Admin</a></li>
+
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+<!-- Messages -->
+{% if messages %}
+    <div class="container mx-auto px-4 py-2 space-y-2">
+        {% for message in messages %}
+            <div class="message-alert transition-opacity duration-1000 ease-in-out opacity-100 p-3 rounded text-white shadow-md
+                   {% if message.tags == 'error' %}bg-red-600
+                   {% elif message.tags == 'success' %}bg-green-600
+                   {% elif message.tags == 'warning' %}bg-yellow-500 text-black
+                   {% elif message.tags == 'info' %}bg-blue-500
+                   {% else %}bg-gray-600{% endif %}"
+                 data-timeout="5000">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const alerts = document.querySelectorAll(".message-alert");
+            alerts.forEach((alert) => {
+                const timeout = alert.dataset.timeout || 4000;
+                setTimeout(() => {
+                    alert.classList.add("opacity-0");
+                    setTimeout(() => alert.remove(), 1000);  // wait for fade-out before removing
+                }, timeout);
+            });
+        });
+    </script>
+{% endif %}
+
+
+<!-- Main Layout -->
+<div class="flex-1 bg-blue-200 h-dvh">
+    <main id="ContentContainer" class="w-full h-full p-1 flex-1 ">
+        <div
+                id="ContentBackground"
+                class="bg-[url({% static 'images/paper-texture.jpg' %})] md:bg-[url({% static 'images/paper-texture.jpg' %})]  bg-local grid grid-cols-1 md:grid-cols-4 gap-2 p-2 m-1 shadow h-[calc(100dvh-8rem)] shadow-xl/30 overflow-y-hidden">
+            <!-- Main Content -->
+            <div
+                    id="MainContent"
+                    class="bg-linear-to-r from-amber-100 to-blue-100 md:col-span-3 p-5 rounded shadow h-full flex flex-col justify-between min-h-0 shadow-xl/30">
+                <article class="h-full overflow-auto scroll-smooth">
+                    {% block content %}
+                    {% endblock %}
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <div
+                    id="LeftContent"
+                    class="bg-linear-to-l from-amber-100 to-blue-100 md:col-span-1 p-5 rounded shadow-xl/30shadow h-full overflow-auto">
+                {% block left %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<footer class="bg-blue-300 text-center py-4 mt-auto">
+    &copy; {% current_year %} Blognificent
+</footer>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css"/>
+</body>
+</html>

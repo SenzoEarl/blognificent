@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="enabledOnReformat" value="true" />
+    <option name="enabledOnSave" value="true" />
+    <option name="sdkName" value="Python 3.13 (blognificent)" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13" project-jdk-type="Python SDK" />
+  <component name="TypeScriptCompiler">
+    <option name="nodeInterpreterTextField" value="$PROJECT_DIR$/../../Program Files/nodejs/node" />
+    <option name="useTypesFromServer" value="true" />
+  </component>
+</project>

@@ -1,0 +1,35 @@
+{% extends 'assets/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    {% if sent %}
+
+
+        <!-- Latest Posts -->
+        <div class="card lg:card-side bg-base-100 shadow-xl/30">
+            <div class="card-body">
+                <h2 class="card-title">Success</h2>
+                <p class="-mt-2">
+                    Email sent successfully
+                </p>
+            </div>
+        </div>
+        <p></p>
+    {% else %}
+
+        <!-- Latest Posts -->
+        <div class="card lg:card-side bg-base-100 shadow-xl/30">
+            <div class="card-body">
+                <h2 class="card-title">Share post => {{ post.title }} =></h2>
+                <p class="-mt-2">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-600">Send</button>
+                </form>
+                </p>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}

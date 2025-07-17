@@ -1,0 +1,92 @@
+{% extends 'assets/base.html' %}
+{% load blog_tags %}
+{% block content %}
+
+
+    {% for post in posts %}
+
+        <div class="card lg:card-side bg-base-100 shadow-xl/30 motion-safe:animate-wiggle">
+
+            <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
+                <h3 class="card-title">
+                    <small>
+                        <i class="ai-calendar"></i> {{ post.publish|date }}<br>
+                        <i class="ai-person"></i> {{ post.author }}<br>
+                        <i class="ai-tag"></i>
+                        {% for tag in post.tags.all %}
+                            <a href="{% url 'blog:list_by_tag' tag.slug %}" class="link">{{ tag.name }}</a>
+                            {% if not forloop.last %}
+                                ,
+                            {% endif %}
+                        {% empty %}
+                            <a>No tags</a>
+                        {% endfor %}
+                    </small>
+                </h3>
+                <p class="border-l p-2">{{ post.body|first_two_sentences }}</p>
+                <div class="card-actions justify-end">
+                    <a href="{{ post.get_absolute_url }}"
+                       class="bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-600">Read</a>
+                </div>
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="flex items-center justify-center h-16 bg-gray-100 dark:bg-gray-800 mb-2 rounded-lg">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">No posts currently exist</h2>
+        </div>
+    {% endfor %}
+
+
+
+    {% include 'assets/pagination.html' with page=page_obj %}
+
+{% endblock %}
+
+{% block left %}
+
+
+    <!-- Latest Posts -->
+    <div class="card lg:card-side bg-base-100 shadow-xl/30">
+        <div class="card-body">
+            <h2 class="card-title">Latest Posts</h2>
+            <p class="-mt-2">
+                {% show_latest_posts %}
+            </p>
+        </div>
+    </div>
+
+
+    <!--Most Commented Posts -->
+    <div class="card lg:card-side bg-base-100 shadow-xl/30 mt-2 ">
+        <div class="card-body">
+            <h2 class="card-title">Most Commented Posts</h2>
+            <p class="-mt-2">
+                {% get_most_commented_posts as most_commented_posts %}
+            <ul class="list-none">
+                {% for post in most_commented_posts %}
+                    <li class="underline visited:line-through font-bold">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item list-group-item-warning">all posts are looking equally commented</li>
+                {% endfor %}
+
+            </ul>
+            </p>
+        </div>
+    </div>
+
+    <!-- Site Stats-->
+    <div class="stats md:stats bg-base-100 border-base-300 border w-full mt-2 shadow-xl/30">
+        <div class="stat">
+            <div class="stat-title">Posts</div>
+            <div class="stat-value">{% total_posts %}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Users</div>
+            <div class="stat-value">{% count_superusers %}</div>
+        </div>
+    </div>
+{% endblock %}

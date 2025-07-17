@@ -1,0 +1,16 @@
+INFO 2025-07-17 14:08:17,973 autoreload 8744 18716 Watching for file changes with StatReloader
+INFO 2025-07-17 14:08:33,019 autoreload 8744 18716 C:\workspace\blognificent\blognificent\settings.py changed, reloading.
+INFO 2025-07-17 14:08:35,507 autoreload 24140 15664 Watching for file changes with StatReloader
+INFO 2025-07-17 14:11:35,287 autoreload 24140 15664 C:\workspace\blognificent\blognificent\settings.py changed, reloading.
+INFO 2025-07-17 14:17:33,545 autoreload 11440 4588 Watching for file changes with StatReloader
+INFO 2025-07-17 14:17:41,966 autoreload 11440 4588 C:\workspace\blognificent\blognificent\settings.py changed, reloading.
+INFO 2025-07-17 14:17:44,802 autoreload 4684 14472 Watching for file changes with StatReloader
+INFO 2025-07-17 14:17:46,295 basehttp 4684 15464 "GET / HTTP/1.1" 200 6894
+INFO 2025-07-17 14:17:46,952 basehttp 4684 15464 "GET /static/images/paper-texture.jpg HTTP/1.1" 304 0
+INFO 2025-07-17 14:18:28,424 basehttp 4684 15464 "GET / HTTP/1.1" 200 6894
+INFO 2025-07-17 14:20:21,570 autoreload 4684 14472 C:\workspace\blognificent\blognificent\settings.py changed, reloading.
+ERROR 2025-07-17 15:27:39,546 basehttp 17016 23872 "POST /post/1/comment/ HTTP/1.1" 500 3358
+ERROR 2025-07-17 15:29:31,603 basehttp 17140 18460 "POST /post/1/comment/ HTTP/1.1" 500 3358
+ERROR 2025-07-17 15:34:10,397 basehttp 17452 23856 "POST /post/1/comment/ HTTP/1.1" 500 3358
+ERROR 2025-07-17 16:34:45,580 basehttp 11608 17848 "POST /post/1/comment/ HTTP/1.1" 500 4235
+ERROR 2025-07-17 17:42:09,418 basehttp 21760 19548 "GET /1/share/ HTTP/1.1" 500 171465
