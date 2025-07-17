@@ -39,7 +39,9 @@
         </div>
         <div class="flex-none">
             <ul class="menu menu-horizontal px-1">
-                <li><a href="{% url 'blog:post_feed' %}" class="link">RSS</a></li>
+                <li><a href="{% url 'blog:post_feed' %}" class="link" rel="alternate" type="application/rss+xml"
+                       title="Blognificent Feed">RSS</a>
+                </li>
                 <li><a href="{% url 'blog:api_post_list' %}" class="link">API</a></li>
                 <li><a href="{% url 'admin:index' %}" class="link">Admin</a></li>
 

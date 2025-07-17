@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "taggit",
     "gunicorn",
+    "django.contrib.syndication",
 ]
 
 MIDDLEWARE = [
