@@ -102,6 +102,61 @@ A modern, feature-rich blog application built with Django, Tailwind CSS, and Dai
 
 4. Access the application at http://localhost:8000/
 
+## Docker Workflow with GitHub Actions
+
+This project includes a GitHub Actions workflow for automating Docker image building and deployment:
+
+1. **Automatic Builds**: Docker images are automatically built when:
+   - Code is pushed to the main/master branch
+   - A new tag with 'v*' pattern is created (e.g., v1.0.0)
+   - A pull request is opened against main/master branch
+
+2. **Container Registry**: Images are pushed to GitHub Container Registry (ghcr.io) and tagged with:
+   - Branch name for branch pushes
+   - PR number for pull requests
+   - Semantic version for tag pushes (v1.0.0, v1.0, etc.)
+   - Commit SHA
+
+3. **Automated Testing**: After building the image, tests are automatically run to ensure everything works correctly.
+
+4. **Using the Container Image**:
+   ```bash
+   # Pull the latest image
+   docker pull ghcr.io/senzoearl/blognificent:latest
+   
+   # Run the container
+   docker run -p 8000:8000 --env-file .env ghcr.io/senzoearl/blognificent:latest
+   ```
+
+5. **For Development**: You can still use docker-compose as described above for local development.
+
+## Django CI Workflow with GitHub Actions
+
+This project includes a GitHub Actions workflow for Django continuous integration:
+
+1. **Automated Testing**: 
+   - Runs Django tests with `python manage.py test`
+   - Measures test coverage with the coverage tool
+   - Performs code formatting checks with Black
+   - Runs security scans with Bandit and Safety
+
+2. **Code Quality**:
+   - Lints code with Flake8 to catch errors and enforce style
+   - Checks import sorting with isort
+   
+3. **Database Integrity**:
+   - Verifies that all migrations are properly created
+
+4. **When It Runs**:
+   - On pushes to main, master, and develop branches
+   - On pull requests to main, master, and develop branches
+
+5. **Benefits**:
+   - Catches errors early in the development process
+   - Ensures consistent code style and quality
+   - Prevents security vulnerabilities
+   - Maintains database schema integrity
+
 ## Usage
 
 ### Admin Interface
