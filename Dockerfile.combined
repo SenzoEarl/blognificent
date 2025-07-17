@@ -1,0 +1,77 @@
+# Use the official Python runtime image
+FROM python:3.13
+
+# Set consistent labels with project details
+LABEL maintainer="Senzo Maseko <senzo.e.maseko@gmail.com>" \
+      org.opencontainers.image.title="Blognificent" \
+      org.opencontainers.image.version="2.0" \
+      org.opencontainers.image.description="A modern, feature-rich blog application built with Django, Tailwind CSS, and DaisyUI" \
+      org.opencontainers.image.authors="Senzo Maseko <senzo.e.maseko@gmail.com>" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.url="https://github.com/SenzoEarl/blognificent" \
+      org.opencontainers.image.source="https://github.com/SenzoEarl/blognificent" \
+      org.opencontainers.image.created="2025-07-18" \
+      org.opencontainers.image.vendor="Senzo Maseko" \
+      org.opencontainers.image.documentation="https://github.com/SenzoEarl/blognificent/blob/main/README.md" \
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.name="Blognificent" \
+      org.label-schema.version="2.0" \
+      org.label-schema.description="Django-based blog app with Nginx in a single container" \
+      org.label-schema.vcs-url="https://github.com/SenzoEarl/blognificent"
+
+# Set environment variables
+# Prevents Python from writing pyc files to disk
+ENV PYTHONDONTWRITEBYTECODE=1
+# Prevents Python from buffering stdout and stderr
+ENV PYTHONUNBUFFERED=1
+
+# Install Nginx and other dependencies
+RUN apt-get update && apt-get install -y \
+    nginx \
+    supervisor \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Upgrade pip and install Python dependencies
+COPY requirements.txt ./requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copy the Django project to the container
+COPY . .
+
+# Create directories for SSL certificates if they don't exist
+RUN mkdir -p /etc/nginx/ssl/certs \
+    && mkdir -p /etc/nginx/ssl/private
+
+# Generate self-signed SSL certificates for development
+RUN openssl genrsa -out /etc/nginx/ssl/private/blognificent.key 2048 \
+    && openssl req -new -key /etc/nginx/ssl/private/blognificent.key -out /etc/nginx/ssl/private/blognificent.csr -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost" \
+    && openssl x509 -req -days 365 -in /etc/nginx/ssl/private/blognificent.csr -signkey /etc/nginx/ssl/private/blognificent.key -out /etc/nginx/ssl/certs/blognificent.crt \
+    && openssl dhparam -out /etc/nginx/ssl/certs/dhparam.pem 2048
+
+# Configure Nginx
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/nginx.dev.conf /etc/nginx/nginx.dev.conf
+
+# Create a modified Nginx configuration that points to localhost instead of web
+RUN sed 's/proxy_pass http:\/\/web:8000;/proxy_pass http:\/\/localhost:8000;/g' /etc/nginx/nginx.conf > /etc/nginx/nginx.combined.conf
+RUN sed 's/proxy_pass http:\/\/web:8000;/proxy_pass http:\/\/localhost:8000;/g' /etc/nginx/nginx.dev.conf > /etc/nginx/nginx.dev.combined.conf
+
+# Set up supervisor to manage multiple processes
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose ports
+EXPOSE 80 443 8000
+
+# Set up entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Run the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Default command to run supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
