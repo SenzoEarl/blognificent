@@ -209,3 +209,12 @@ LOGGING = {
 handler403 = "blognificent.views.custom_403"
 handler404 = "blognificent.views.custom_404"
 handler500 = "blognificent.views.custom_500"
+
+
+# SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"

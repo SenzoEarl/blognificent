@@ -14,3 +14,9 @@ ERROR 2025-07-17 15:29:31,603 basehttp 17140 18460 "POST /post/1/comment/ HTTP/1
 ERROR 2025-07-17 15:34:10,397 basehttp 17452 23856 "POST /post/1/comment/ HTTP/1.1" 500 3358
 ERROR 2025-07-17 16:34:45,580 basehttp 11608 17848 "POST /post/1/comment/ HTTP/1.1" 500 4235
 ERROR 2025-07-17 17:42:09,418 basehttp 21760 19548 "GET /1/share/ HTTP/1.1" 500 171465
+ERROR 2025-07-17 22:06:05,121 basehttp 23948 26408 You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-07-17 22:06:05,130 basehttp 23948 23080 You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-07-17 22:11:59,172 basehttp 23948 24436 You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-07-17 22:11:59,182 basehttp 23948 21780 You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-07-17 22:17:14,523 basehttp 23948 528 You're accessing the development server over HTTPS, but it only supports HTTP.
+ERROR 2025-07-17 22:17:14,532 basehttp 23948 26332 You're accessing the development server over HTTPS, but it only supports HTTP.
