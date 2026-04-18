@@ -1,0 +1,4 @@
+echo "Starting build process..."
+python3.13 -m pip install -r requirements.txt
+python3.13 manage.py collectstatic --noinput --clear
+echo "Build process completed."
